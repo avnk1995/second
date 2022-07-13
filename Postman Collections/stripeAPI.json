@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "a89db163-a5c6-45bd-9c5d-a733740149cb",
+		"name": "StripeAPItesting",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "stripeAPI",
+			"item": [
+				{
+					"name": "createCustomer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eaea12b3-fbd9-4743-91f2-5b06f0582ed4",
+								"exec": [
+									"pm.test(\"all assertions on stripe API create customer\", \r",
+									"function()\r",
+									"{\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.headers.get('Content-type')).to.contains('application/json');\r",
+									"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+									"    pm.expect(pm.response.json().id).to.be.a(\"string\");\r",
+									"    pm.environment.set(\"id\", pm.response.json().id);\r",
+									"    pm.expect(pm.response.json().name).to.equals(pm.iterationData.get(\"name\"));\r",
+									"    pm.expect(pm.response.json().email).to.equals(pm.iterationData.get(\"email\"));\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "592bae58-1a7b-4f3c-bf91-97e719ac1bcf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "{{APIkey}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "{{name}}",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "{{description}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": "https://api.stripe.com/v1/customers"
+					},
+					"response": []
+				},
+				{
+					"name": "updateCustomer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "74b9e84c-ac04-4e9a-aedb-f6eab0ed2e9a",
+								"exec": [
+									"pm.test(\"all assertions on stripe API update customer\", \r",
+									"function()\r",
+									"{\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.headers.get('Content-type')).to.contains('application/json');\r",
+									"    pm.expect(pm.response.text()).to.include(\"phone\");\r",
+									"    pm.expect(pm.response.json().phone).to.be.a(\"string\");\r",
+									"    pm.expect(pm.response.json().phone).to.equals(\"\"+pm.iterationData.get(\"phone\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "6599a0f6-e396-46a0-bb71-e1d20b8d6698",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{APIkey}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "phone",
+									"value": "{{phone}}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": "https://api.stripe.com/v1/customers/{{id}}"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteCustomer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb694933-fc3b-42cb-bbd3-29a26b6335f4",
+								"exec": [
+									"pm.test(\"all assertions on stripe API delete customer\", \r",
+									"function()\r",
+									"{\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(pm.response.headers.get('Content-type')).to.contains('application/json');\r",
+									"    pm.expect(pm.response.text()).to.include(\"deleted\");\r",
+									"    pm.expect(pm.response.json().deleted).to.be.a(\"boolean\");\r",
+									"    pm.expect(pm.response.json().deleted).to.equals(true);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"_postman_id": "a4ca20c5-6c78-47bd-884b-809df6f9d07d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{APIkey}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "https://api.stripe.com/v1/customers/{{id}}"
+					},
+					"response": []
+				}
+			],
+			"_postman_id": "4cdd0fc4-4fa5-42e7-9703-8564b6e8b904"
+		}
+	]
+}
